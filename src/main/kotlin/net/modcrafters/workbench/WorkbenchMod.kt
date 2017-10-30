@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger
 @Mod(modid = MOD_ID, version = MOD_VERSION, name = MOD_NAME,
     dependencies = MOD_DEPENDENCIES, acceptedMinecraftVersions = MOD_MC_VERSION,
     useMetadata = true, modLanguage = "kotlin", modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter")
-object NEBBMod {
+object WorkbenchMod {
     @SidedProxy(clientSide = "net.modcrafters.workbench.ClientProxy", serverSide = "net.modcrafters.workbench.ServerProxy")
     lateinit var proxy: CommonProxy
     lateinit var logger: Logger
