@@ -1,0 +1,63 @@
+{
+    "conditions": [{
+        "type": "minecraft:item_exists",
+        "item": "workbench:workbench"
+    }],
+  "type":"minecraft:crafting_shaped",
+
+  "pattern": [
+    "AAA",
+    "IPI",
+	"PPP"
+
+  ],
+
+  "key": {
+
+    "A": {
+
+      "item": "minecraft:stone",
+      "data": 6
+    },
+
+    "I": {
+
+      "item": "minecraft:iron_ingot"
+
+    },
+
+    "P": [
+	  {
+        "item": "minecraft:planks",
+        "data": 0
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 1
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 2
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 3
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 4
+      },
+      {
+        "item": "minecraft:planks",
+        "data": 5
+      }
+    ]
+
+  },
+
+  "result": {
+
+    "item": "workbench:workbench"
+  }
+
+}

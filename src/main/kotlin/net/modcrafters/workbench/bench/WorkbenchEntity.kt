@@ -37,7 +37,7 @@ class WorkbenchEntity : SidedTileEntity(425) {
             { _, _-> false }, // we never allow automation to output from this inventory
             true)
 
-        this.bottom = this.addSimpleInventory(9, "bottom_inventory", EnumDyeColor.BLUE, "Extra Stuff",
+        this.bottom = this.addSimpleInventory(9, "bottom_inventory", EnumDyeColor.BLUE, "Secondary Ingredients",
             BoundingRectangle.slots(7, 83, 9, 1),
             { stack, slot -> true }, // TODO: filter by recipes, maybe
             { _, _-> false }, // we never allow automation to output from this inventory

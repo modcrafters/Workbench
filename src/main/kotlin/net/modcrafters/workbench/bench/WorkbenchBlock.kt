@@ -9,4 +9,4 @@ import net.ndrei.teslacorelib.blocks.OrientedBlock
 @Suppress("unused")
 @AutoRegisterBlock
 object WorkbenchBlock : OrientedBlock<WorkbenchEntity>(MOD_ID, WorkbenchMod.creativeTab, "workbench",
-    WorkbenchEntity::class.java, Material.WOOD)
+    WorkbenchEntity::class.java, Material.ROCK)

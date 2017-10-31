@@ -1,0 +1,2 @@
+Texture altered and allowed in this project per MIT license from Copygirl
+https://github.com/copygirl/BetterStorage

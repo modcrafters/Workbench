@@ -4,8 +4,7 @@ import net.modcrafters.workbench.client.Textures
 import net.ndrei.teslacorelib.containers.BasicTeslaContainer
 import net.ndrei.teslacorelib.gui.BasicTeslaGuiContainer
 
-class WorkbenchGuiContainer(container: BasicTeslaContainer<WorkbenchEntity>, entity: WorkbenchEntity)
-    : BasicTeslaGuiContainer<WorkbenchEntity>(425, container, entity) {
+class WorkbenchGuiContainer(container: BasicTeslaContainer<WorkbenchEntity>, entity: WorkbenchEntity) : BasicTeslaGuiContainer<WorkbenchEntity>(425, container, entity) {
 
     override val containerWidth get() = 176
     override val containerHeight get() = 197

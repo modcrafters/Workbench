@@ -46,6 +46,7 @@ minecraft {
 // Mad hacks to make source replacements work for Kotlin
 // "stolen" from: https://github.com/PaleoCrafter/VanillaImmersion/blob/ee82ecafb76659cf7d7822a722c8f63f43f41d01/build.gradle#L119-L136
 import net.minecraftforge.gradle.user.TaskSourceCopy
+
 for (set in sourceSets) {
     def taskName = "source${set.name.capitalize()}Kotlin"
     def dir = new File(project.getBuildDir(), "sources/${set.name}/kotlin")
