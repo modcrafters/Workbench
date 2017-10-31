@@ -75,7 +75,7 @@ repositories {
     mavenCentral()
     mavenLocal()
     jcenter()
-    maven { name='mine'; url='http://maven.ndrei.net' }
+    maven { name='mine'; url='https://maven.modcrafters.net/' }
     maven { name='forgelin'; url='http://maven.shadowfacts.net/' }
 
     maven { name='jei'; url="http://dvs1.progwml6.com/files/maven" }
