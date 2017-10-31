@@ -2,6 +2,7 @@ package net.modcrafters.workbench.bench
 
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumDyeColor
+import net.minecraft.util.EnumFacing
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.modcrafters.workbench.client.Icons
 import net.ndrei.teslacorelib.gui.BasicTeslaGuiContainer
@@ -19,29 +20,57 @@ class WorkbenchEntity : SidedTileEntity(425) {
     override fun initializeInventories() {
         super.initializeInventories()
 
-        this.left = this.addSimpleInventory(9, "left_inventory", EnumDyeColor.GREEN, "Left Inventory",
+        this.left = this.addSimpleInventory(9, SYNC_PART_LEFT_INVENTORY, EnumDyeColor.GREEN, "Left Inventory",
             BoundingRectangle.slots(17, 17, 3, 3),
             { stack, slot -> true }, // TODO: filter by recipes, maybe
             { _, _-> false }, // we never allow automation to output from this inventory
             true)
 
-        this.right = this.addSimpleInventory(6, "right_inventory", EnumDyeColor.RED, "Right Inventory",
+        this.right = this.addSimpleInventory(6, SYNC_PART_RIGHT_INVENTORY, EnumDyeColor.RED, "Right Inventory",
             BoundingRectangle.slots(125, 17, 2, 3),
             { _, _ -> false }, // we never allow automation to insert into this slot
             { _, _-> true } // automation can always extract from here
             )
 
-        this.middle = this.addSimpleInventory(1, "middle_inventory", EnumDyeColor.BROWN, "Tool",
+        this.middle = this.addSimpleInventory(1, SYNC_PART_MIDDLE_INVENTORY, EnumDyeColor.BROWN, "Tool",
             BoundingRectangle.slots(89, 45, 1, 1),
             { stack, slot -> true }, // TODO: filter by recipes, maybe
             { _, _-> false }, // we never allow automation to output from this inventory
             true)
 
-        this.bottom = this.addSimpleInventory(9, "bottom_inventory", EnumDyeColor.BLUE, "Secondary Ingredients",
+        this.bottom = this.addSimpleInventory(9, SYNC_PART_BOTTOM_INVENTORY, EnumDyeColor.BLUE, "Secondary Ingredients",
             BoundingRectangle.slots(7, 83, 9, 1),
             { stack, slot -> true }, // TODO: filter by recipes, maybe
             { _, _-> false }, // we never allow automation to output from this inventory
             true)
+
+        // make sure everything is accessible from everywhere for the moment
+        arrayOf(EnumDyeColor.GREEN, EnumDyeColor.RED, EnumDyeColor.BROWN, EnumDyeColor.BLUE).forEach {
+            this.sideConfig.setSidesForColor(it, EnumFacing.VALUES.toList())
+        }
+    }
+
+    override fun onSyncPartUpdated(key: String) {
+        super.onSyncPartUpdated(key)
+
+        @Suppress("UNNECESSARY_SAFE_CALL") // it happens!
+        if (this.getWorld()?.isRemote == true) return // don't care about client side
+
+        when (key) {
+            SYNC_PART_LEFT_INVENTORY -> {
+                // left inventory changed
+            }
+            SYNC_PART_MIDDLE_INVENTORY -> {
+                // middle inventory changed
+            }
+            SYNC_PART_BOTTOM_INVENTORY -> {
+                // bottom inventory changed
+            }
+            SYNC_PART_RIGHT_INVENTORY -> {
+                // right inventory changed
+                // this might require some non-generic handling as you might want to know exactly what was extracted
+            }
+        }
     }
 
     override fun getContainer(id: Int, player: EntityPlayer) =
@@ -68,5 +97,12 @@ class WorkbenchEntity : SidedTileEntity(425) {
 
     override fun innerUpdate() {
         // TODO: maybe automate this?
+    }
+
+    companion object {
+        private const val SYNC_PART_LEFT_INVENTORY = "left_inventory"
+        private const val SYNC_PART_MIDDLE_INVENTORY = "middle_inventory"
+        private const val SYNC_PART_RIGHT_INVENTORY = "right_inventory"
+        private const val SYNC_PART_BOTTOM_INVENTORY = "bottom_inventory"
     }
 }
