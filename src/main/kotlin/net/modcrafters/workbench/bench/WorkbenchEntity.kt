@@ -3,6 +3,7 @@ package net.modcrafters.workbench.bench
 import net.minecraft.entity.player.EntityPlayer
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.util.EnumFacing
+import net.minecraft.world.WorldServer
 import net.minecraftforge.items.IItemHandlerModifiable
 import net.modcrafters.workbench.client.Icons
 import net.ndrei.teslacorelib.gui.BasicTeslaGuiContainer
@@ -10,6 +11,8 @@ import net.ndrei.teslacorelib.gui.MachineNameGuiPiece
 import net.ndrei.teslacorelib.gui.PlayerInventoryBackground
 import net.ndrei.teslacorelib.inventory.BoundingRectangle
 import net.ndrei.teslacorelib.tileentities.SidedTileEntity
+import net.ndrei.teslacorelib.utils.insertInExistingStacks
+import net.ndrei.teslacorelib.utils.insertItems
 
 class WorkbenchEntity : SidedTileEntity(425) {
     private lateinit var left : IItemHandlerModifiable
@@ -54,17 +57,20 @@ class WorkbenchEntity : SidedTileEntity(425) {
         super.onSyncPartUpdated(key)
 
         @Suppress("UNNECESSARY_SAFE_CALL") // it happens!
-        if (this.getWorld()?.isRemote == true) return // don't care about client side
+        if (this.getWorld()?.isRemote != false) return // don't care about client side
 
         when (key) {
             SYNC_PART_LEFT_INVENTORY -> {
                 // left inventory changed
+                this.checkRecipe()
             }
             SYNC_PART_MIDDLE_INVENTORY -> {
                 // middle inventory changed
+                this.checkRecipe()
             }
             SYNC_PART_BOTTOM_INVENTORY -> {
                 // bottom inventory changed
+                this.checkRecipe()
             }
             SYNC_PART_RIGHT_INVENTORY -> {
                 // right inventory changed
@@ -97,6 +103,24 @@ class WorkbenchEntity : SidedTileEntity(425) {
 
     override fun innerUpdate() {
         // TODO: maybe automate this?
+    }
+
+    fun checkRecipe() {
+        val recipe = WorkbenchRegistry.findRecipe(this.left, this.middle.getStackInSlot(0), this.bottom) ?: return
+        val world = this.getWorld()
+        if ((world is WorldServer) && recipe.extractFromInventories(world, this.left, this.middle, this.bottom)) {
+            recipe.result.forEach {
+                if (this.getWorld().rand.nextFloat() <= it.second) {
+                    val remaining = this.right.insertItems(it.first.copy(), false)
+                    if (!remaining.isEmpty) {
+                        val remaining2 = this.bottom.insertItems(remaining, false)
+                        if (!remaining2.isEmpty) {
+                            this.spawnItemFromFrontSide(remaining2)
+                        }
+                    }
+                }
+            }
+        }
     }
 
     companion object {
