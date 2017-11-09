@@ -1,18 +1,35 @@
 {
-  "forge_marker": 1,
+  "forge_marker":1,
   "defaults": {
-    "model": "workbench:workbench"
+    "textures": {
+      "particle": "workbench:blocks/workbench_side",
+      "north": "workbench:blocks/workbench_side",
+      "west": "workbench:blocks/workbench_side_2",
+      "east": "workbench:blocks/workbench_side_2",
+     "south": "workbench:blocks/workbench_side",
+      "down": "workbench:blocks/workbench_bottom"
+    },
+    "model": "cube",
+    "transform": "forge:default-block"
   },
   "variants": {
-    "normal": [{}],
-    "inventory": [{}],
-    "facing": {
-      "north": {},
-      "south": {"y": 180},
-      "west": {"y": 270},
-      "east": {"y": 90},
-      "up": {"x": -90},
-      "down": {"x": 90}
-    }
+	"color": {
+      	  "red": {"textures": {"up": "workbench:blocks/workbench_top_red"} },
+	  "orange": {"textures": {"up": "workbench:blocks/workbench_top_orange"} },
+	  "yellow": {"textures": {"up": "workbench:blocks/workbench_top_yellow"} },
+	  "lime": {"textures": {"up": "workbench:blocks/workbench_top_lime"} },
+	  "green": {"textures": {"up": "workbench:blocks/workbench_top_green"} },
+	  "cyan": {"textures": {"up": "workbench:blocks/workbench_top_cyan"} },
+	  "light_blue": {"textures": {"up": "workbench:blocks/workbench_top_lightblue"} },
+	  "blue": {"textures": {"up": "workbench:blocks/workbench_top_blue"} },
+	  "magenta": {"textures": {"up": "workbench:blocks/workbench_top_magenta"} },
+	  "purple": {"textures": {"up": "workbench:blocks/workbench_top_purple"} },
+	  "pink": {"textures": {"up": "workbench:blocks/workbench_top_pink"} },
+	  "brown": {"textures": {"up": "workbench:blocks/workbench_top_brown"} },
+	  "gray": {"textures": {"up": "workbench:blocks/workbench_top"} },
+	  "silver": {"textures": {"up": "workbench:blocks/workbench_top"} },
+	  "white": {"textures": {"up": "workbench:blocks/workbench_top"} },
+	  "black": {"textures": {"up": "workbench:blocks/workbench_top"} }
+	}
   }
 }

@@ -1,2 +1,3 @@
 tile.workbench.workbench.name=Workbench
-itemGroup.Workbench=Workbench
+itemGroup.workbench=Workbench
+container.workbench.name=Workbench
