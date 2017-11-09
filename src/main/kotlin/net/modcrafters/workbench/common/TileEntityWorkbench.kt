@@ -4,6 +4,7 @@ import java.util.Arrays
 
 import net.minecraft.block.state.IBlockState
 import net.minecraft.entity.player.EntityPlayer
+import net.minecraft.inventory.Container
 import net.minecraft.inventory.IInventory
 import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
@@ -18,6 +19,7 @@ import net.minecraft.util.text.ITextComponent
 import net.minecraft.util.text.TextComponentString
 import net.minecraft.util.text.TextComponentTranslation
 import net.minecraft.world.World
+import net.minecraftforge.common.crafting.CraftingHelper
 import net.minecraftforge.fml.common.registry.ForgeRegistries
 import kotlin.experimental.and
 
@@ -85,6 +87,17 @@ class TileEntityWorkbench : TileEntity(), IInventory, ITickable {
         if (itemstack.isEmpty && itemstack.count > inventoryStackLimit) { //  isEmpty(); getStackSize()
             itemstack.count = inventoryStackLimit  //setStackSize
         }
+
+        if (slotIndex in (9..17)) {
+            val crafting = InventoryCrafting(object : Container() {
+                override fun canInteractWith(playerIn: EntityPlayer?) = true
+            }, 3, 3)
+            (9 until 17).forEach { crafting.setInventorySlotContents(it - 9, this.itemStacks[it] ?: ItemStack.EMPTY) }
+            val recipe = CraftingManager.findMatchingRecipe(crafting, this.world)
+            this.itemStacks[18] = recipe?.recipeOutput ?: ItemStack.EMPTY
+            this.markDirty()
+        }
+
         markDirty()
     }
 
@@ -160,8 +173,6 @@ class TileEntityWorkbench : TileEntity(), IInventory, ITickable {
         //if (canCraft()) {
         //	craftItem(true);
         //}
-
-
     }
 
     //private boolean canCraft() {return craftItem(false);}
