@@ -15,11 +15,8 @@ import net.minecraft.client.renderer.block.model.ModelResourceLocation
 import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.ItemStack
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
-import net.modcrafters.workbench.common.BlockWorkbench
+import net.modcrafters.workbench.common.*
 
-import net.modcrafters.workbench.common.GuiHandler
-import net.modcrafters.workbench.common.ItemBlockWorkbench
-import net.modcrafters.workbench.common.TileEntityWorkbench
 import org.apache.logging.log4j.Logger
 
 @Mod(modid = Workbench.MODID, version = Workbench.VERSION,useMetadata = true,name = Workbench.NAME,dependencies ="required-after:forgelin@[1.5.1,)", modLanguage = "kotlin", modLanguageAdapter = "net.shadowfacts.forgelin.KotlinAdapter")
@@ -31,6 +28,7 @@ object Workbench{
      const val VERSION = "1.0"
 
     @SidedProxy(clientSide = "net.modcrafters.workbench.client.ClientProxy", serverSide = "net.modcrafters.workbench.server.ServerProxy")
+    lateinit var proxy: CommonProxy
 
     lateinit var logger: Logger
 
@@ -39,6 +37,7 @@ object Workbench{
 
     @Mod.EventHandler
     fun preInit(event: FMLPreInitializationEvent) {
+        this.logger = event.modLog
 
         logger.error("Hello from Kotlin!")
         addBlock(BlockBench,"workbench")
