@@ -7,6 +7,7 @@ import net.minecraft.item.EnumDyeColor
 import net.minecraft.item.Item
 import net.minecraft.item.ItemStack
 import net.minecraft.util.ResourceLocation
+import net.minecraftforge.client.event.ModelRegistryEvent
 import net.minecraftforge.client.model.ModelLoader
 import net.minecraftforge.event.RegistryEvent
 import net.minecraftforge.fml.common.Mod
@@ -14,7 +15,6 @@ import net.minecraftforge.fml.common.SidedProxy
 import net.minecraftforge.fml.common.event.FMLPreInitializationEvent
 import net.minecraftforge.fml.common.eventhandler.SubscribeEvent
 import net.minecraftforge.fml.common.registry.GameRegistry
-import net.minecraftforge.fml.relauncher.Side
 import net.modcrafters.workbench.common.BlockWorkbench
 import net.modcrafters.workbench.common.CommonProxy
 import net.modcrafters.workbench.common.ItemBlockWorkbench
@@ -51,13 +51,6 @@ object Workbench {
         this.logger.error("Hello from Kotlin!")
         this.setupBlock(BLOCK_BENCH, "workbench")
 
-        if (event.side == Side.CLIENT) {
-            for (i in 0..15) {
-                ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BLOCK_BENCH), i,
-                    ModelResourceLocation(ResourceLocation(MODID, "workbench"), "color=" + EnumDyeColor.byMetadata(i).getName()))
-            }
-        }
-
 //        NetworkRegistry.INSTANCE.registerGuiHandler(Workbench, GuiHandler())
         this.proxy.registerMessageHandlers()
     }
@@ -76,6 +69,15 @@ object Workbench {
         itemBlock.registryName = BLOCK_BENCH.registryName
         itemBlock.unlocalizedName = BLOCK_BENCH.registryName!!.resourceDomain + "." + BLOCK_BENCH.registryName!!.resourcePath
         ev.registry.register(itemBlock)
+    }
+
+    @SubscribeEvent
+    @JvmStatic
+    fun registerModels(ev: ModelRegistryEvent) {
+        for (i in 0..15) {
+            ModelLoader.setCustomModelResourceLocation(Item.getItemFromBlock(BLOCK_BENCH), i,
+                ModelResourceLocation(ResourceLocation(MODID, "workbench"), "color=" + EnumDyeColor.byMetadata(i).getName()))
+        }
     }
 
     private fun setupBlock(block: Block, name: String): Block {
