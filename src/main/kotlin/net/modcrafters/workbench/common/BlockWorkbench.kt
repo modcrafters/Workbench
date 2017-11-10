@@ -73,6 +73,9 @@ class BlockWorkbench : Block(Material.ROCK, MapColor.STONE) {
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
 
         val tileEntity = worldIn.getTileEntity(pos)
+
+
+
         if (tileEntity is IInventory) {
             InventoryHelper.dropInventoryItems(worldIn, pos, (tileEntity as IInventory?)!!)
         }

@@ -13,10 +13,12 @@ import net.modcrafters.workbench.common.TileEntityWorkbench
 @SideOnly(Side.CLIENT)
 class GuiWorkbench(invPlayer: InventoryPlayer, private val tileEntityWorkbench: TileEntityWorkbench) : GuiContainer(ContainerWorkbench(invPlayer, tileEntityWorkbench)) {
 
+
     init {
         // Set the width and height of the gui.  Should match the size of the texture!
         xSize = 176
         ySize = 197
+
     }
 
     // draw the background for the GUI - rendered first
