@@ -6,7 +6,7 @@ import net.modcrafters.workbench.common.CommonProxy
 
 @SideOnly(Side.SERVER)
 class ServerProxy : CommonProxy() {
-     override fun registerMessageHandlers() {
-        super.registerMessageHandlers()
-    }
+//     override fun registerMessageHandlers() {
+//        super.registerMessageHandlers()
+//    }
 }

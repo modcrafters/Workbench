@@ -1,7 +1,5 @@
 package net.modcrafters.workbench.common
 
-import java.util.Arrays
-
 import net.minecraft.advancements.CriteriaTriggers
 import net.minecraft.block.Block
 import net.minecraft.block.state.IBlockState
@@ -17,6 +15,7 @@ import net.minecraft.world.World
 import net.minecraftforge.fml.relauncher.Side
 import net.minecraftforge.fml.relauncher.SideOnly
 import net.modcrafters.workbench.Workbench
+import java.util.*
 
 class ItemBlockWorkbench(block: Block) : ItemBlock(block) {
 
@@ -47,7 +46,7 @@ class ItemBlockWorkbench(block: Block) : ItemBlock(block) {
 
     @SideOnly(Side.CLIENT)
     override fun getSubItems(itemIn: CreativeTabs, list: NonNullList<ItemStack>) {
-        if (itemIn === Workbench.BenchTab) {
+        if (itemIn === Workbench.BENCH_TAB) {
             for (i in 0..15) {
                 if (!Arrays.asList(0, 7, 8, 15).contains(i)) {
                     list.add(ItemStack(this, 1, i))

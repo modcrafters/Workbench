@@ -1,7 +1,5 @@
 package net.modcrafters.workbench.common
 
-import java.util.Arrays
-
 import net.minecraft.block.Block
 import net.minecraft.block.SoundType
 import net.minecraft.block.material.MapColor
@@ -18,12 +16,12 @@ import net.minecraft.item.ItemStack
 import net.minecraft.stats.StatList
 import net.minecraft.util.EnumFacing
 import net.minecraft.util.EnumHand
-import net.minecraft.util.NonNullList
 import net.minecraft.util.math.BlockPos
 import net.minecraft.util.math.RayTraceResult
 import net.minecraft.world.World
 import net.minecraftforge.oredict.OreDictionary
 import net.modcrafters.workbench.Workbench
+import java.util.*
 
 class BlockWorkbench : Block(Material.ROCK, MapColor.STONE) {
     init {
@@ -71,18 +69,15 @@ class BlockWorkbench : Block(Material.ROCK, MapColor.STONE) {
      * Called server side after this block is replaced with another in Chunk, but before the Tile Entity is updated
      */
     override fun breakBlock(worldIn: World, pos: BlockPos, state: IBlockState) {
-
         val tileEntity = worldIn.getTileEntity(pos)
 
-
-
         if (tileEntity is IInventory) {
+            // TODO: fix this!
             InventoryHelper.dropInventoryItems(worldIn, pos, (tileEntity as IInventory?)!!)
         }
         // Super MUST be called last because it removes the tile entity
         super.breakBlock(worldIn, pos, state)
     }
-
 
     override fun getPickBlock(state: IBlockState, target: RayTraceResult?, world: World, pos: BlockPos, player: EntityPlayer?): ItemStack {
         return ItemStack(this, 1, state.getValue(COLOR).metadata)
@@ -102,8 +97,8 @@ class BlockWorkbench : Block(Material.ROCK, MapColor.STONE) {
     }
 
     companion object {
+        @JvmStatic
         val COLOR = PropertyEnum.create("color", EnumDyeColor::class.java)
     }
-
 }
 

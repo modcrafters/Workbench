@@ -1,9 +1,6 @@
 package net.modcrafters.workbench.common
 
 import net.minecraft.entity.player.EntityPlayer
-import net.minecraft.inventory.ContainerChest
-import net.minecraft.tileentity.TileEntity
-import net.minecraft.util.EnumHand
 import net.minecraft.util.math.BlockPos
 import net.minecraft.world.World
 import net.minecraftforge.fml.common.network.IGuiHandler
@@ -38,4 +35,3 @@ class GuiHandler : IGuiHandler {
         return null
     }
 }
-

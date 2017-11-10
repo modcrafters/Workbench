@@ -7,6 +7,4 @@ open class CommonProxy {
     open fun registerMessageHandlers() {
         NetworkRegistry.INSTANCE.registerGuiHandler(Workbench, GuiHandler())
     }
-
-
 }
