@@ -6,14 +6,18 @@ import net.minecraft.inventory.InventoryCrafting
 import net.minecraft.item.ItemStack
 import net.minecraft.item.crafting.CraftingManager
 import net.minecraft.nbt.NBTTagCompound
+import net.minecraft.network.NetworkManager
+import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.world.WorldServer
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.ItemStackHandler
+
 
 class TileEntityWorkbench : TileEntity() {
     private inline fun createInventory(size: Int, crossinline onChange: ((s: Int) -> Unit)) = object: ItemStackHandler(size) {
         override fun onContentsChanged(slot: Int) {
-            this@TileEntityWorkbench.markDirty()
+            this@TileEntityWorkbench.sync()
             onChange(slot)
         }
     }
@@ -24,7 +28,18 @@ class TileEntityWorkbench : TileEntity() {
     val outputItems = createInventory(4, {})
     val extraItems = createInventory(9, {})
 
+    private fun sync() {
+        this.markDirty()
+        if (!this.world.isRemote) {
+            val cp = this.world.getChunkFromBlockCoords(getPos()).pos
+            val entry = (this.world as WorldServer).playerChunkMap.getEntry(cp.x, cp.z)
+            entry?.sendPacket(this.updatePacket!!)
+        }
+    }
+
     private fun testRecipe() {
+        if (this.world.isRemote) return
+
         val crafting = InventoryCrafting(object : Container() {
             override fun canInteractWith(playerIn: EntityPlayer?) = true
         }, 3, 3)
@@ -78,5 +93,21 @@ class TileEntityWorkbench : TileEntity() {
         }
 
         return nbt
+    }
+
+    override fun getUpdatePacket(): SPacketUpdateTileEntity? {
+        return SPacketUpdateTileEntity(this.pos, 42, this.updateTag)
+    }
+
+    override fun getUpdateTag(): NBTTagCompound {
+        return this.writeToNBT(NBTTagCompound())
+    }
+
+    override fun onDataPacket(net: NetworkManager, pkt: SPacketUpdateTileEntity) {
+        this.handleUpdateTag(pkt.nbtCompound)
+    }
+
+    override fun handleUpdateTag(tag: NBTTagCompound) {
+        super.handleUpdateTag(tag)
     }
 }
