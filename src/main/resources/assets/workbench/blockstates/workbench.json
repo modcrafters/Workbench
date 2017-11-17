@@ -30,6 +30,6 @@
 	  "silver": {"textures": {"up": "workbench:blocks/workbench_top"} },
 	  "white": {"textures": {"up": "workbench:blocks/workbench_top"} },
 	  "black": {"textures": {"up": "workbench:blocks/workbench_top"} }
-	}
+	},"inventory": [{}]
   }
 }

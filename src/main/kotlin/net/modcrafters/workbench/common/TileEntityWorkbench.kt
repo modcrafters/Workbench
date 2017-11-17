@@ -9,12 +9,20 @@ import net.minecraft.nbt.NBTTagCompound
 import net.minecraft.network.NetworkManager
 import net.minecraft.network.play.server.SPacketUpdateTileEntity
 import net.minecraft.tileentity.TileEntity
+import net.minecraft.util.ITickable
 import net.minecraft.world.WorldServer
 import net.minecraftforge.common.util.Constants
 import net.minecraftforge.items.ItemStackHandler
+import net.minecraftforge.items.ItemHandlerHelper.insertItem
 
 
-class TileEntityWorkbench : TileEntity() {
+
+
+class TileEntityWorkbench : TileEntity(), ITickable {
+    override fun update() {
+        tryCraft()
+    }
+
     private inline fun createInventory(size: Int, crossinline onChange: ((s: Int) -> Unit)) = object: ItemStackHandler(size) {
         override fun onContentsChanged(slot: Int) {
             this@TileEntityWorkbench.sync()
@@ -22,9 +30,9 @@ class TileEntityWorkbench : TileEntity() {
         }
     }
 
-    val inputItems = createInventory(9, { this.testRecipe() })
-    val outputItem = createInventory(1, { this.onRecipeOutputTaken() })
-    val toolItem = createInventory(1, { this.testRecipe() })
+    val inputItems = createInventory(9, {})
+    val outputItem = createInventory(1, {})
+    val toolItem = createInventory(1, {})
     val outputItems = createInventory(4, {})
     val extraItems = createInventory(9, {})
 
@@ -37,8 +45,8 @@ class TileEntityWorkbench : TileEntity() {
         }
     }
 
-    private fun testRecipe() {
-        if (this.world.isRemote) return
+
+    private fun tryCraft(): Boolean {
 
         val crafting = InventoryCrafting(object : Container() {
             override fun canInteractWith(playerIn: EntityPlayer?) = true
@@ -48,16 +56,11 @@ class TileEntityWorkbench : TileEntity() {
         }
         val recipe = CraftingManager.findMatchingRecipe(crafting, this.world)
         this.outputItem.setStackInSlot(0,recipe?.recipeOutput ?: ItemStack.EMPTY)
-    }
+        if(recipe != null){
+            return true
+        }
+        return false
 
-    private fun onRecipeOutputTaken() {
-        // TODO: apply recipe if slot is empty
-//        if (this.outputItem.getStackInSlot(0).isEmpty) {
-//            (0 until this.inputItems.slots).forEach {
-//                val stack = this.inputItems.getStackInSlot(it)
-//                if (!stack.isEmpty) stack.shrink(1)
-//            }
-//        }
     }
 
     override fun readFromNBT(compound: NBTTagCompound) {
